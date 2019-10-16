@@ -224,7 +224,7 @@
     <ManifestKeyFile>PowerPointStudio_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>F8F342EC881B1A44207CD9FCB6B339555206D9A3</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>79B23736702D68AA2186D46D86EEE80DD225FCE7</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
