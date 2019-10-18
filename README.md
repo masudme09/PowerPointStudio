@@ -10,12 +10,7 @@ Generic Powerpoint To HTML converter
 <link rel="File-List" href="file:///E:/My%20Project%20for%20Admission/Project%20Doc/Project%20Goal_files/filelist.xml">
 <link rel="Edit-Time-Data" href="file:///E:/My%20Project%20for%20Admission/Project%20Doc/Project%20Goal_files/editdata.mso">
 <!--[if !mso]>
-<style>
-v\:* {behavior:url(#default#VML);}
-o\:* {behavior:url(#default#VML);}
-w\:* {behavior:url(#default#VML);}
-.shape {behavior:url(#default#VML);}
-</style>
+
 <![endif]--><!--[if gte mso 9]><xml>
  <o:DocumentProperties>
   <o:Author>Masud Rana</o:Author>
