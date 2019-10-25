@@ -18,6 +18,7 @@ namespace PowerPointStudio
         {
         }
 
+      
         #region VSTO generated code
 
         /// <summary>

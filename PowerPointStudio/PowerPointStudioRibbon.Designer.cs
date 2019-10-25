@@ -37,13 +37,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PowerPointStudioRibbon));
             this.tab2 = this.Factory.CreateRibbonTab();
             this.Extract = this.Factory.CreateRibbonGroup();
-            this.preview = this.Factory.CreateRibbonGroup();
             this.btnExtractSlides = this.Factory.CreateRibbonButton();
+            this.preview = this.Factory.CreateRibbonGroup();
             this.btnPreviewWeb = this.Factory.CreateRibbonButton();
             this.btnPreviewJSON = this.Factory.CreateRibbonButton();
+            this.grpEdit = this.Factory.CreateRibbonGroup();
+            this.ediBxExerKey = this.Factory.CreateRibbonEditBox();
             this.tab2.SuspendLayout();
             this.Extract.SuspendLayout();
             this.preview.SuspendLayout();
+            this.grpEdit.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab2
@@ -51,6 +54,7 @@
             this.tab2.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab2.Groups.Add(this.Extract);
             this.tab2.Groups.Add(this.preview);
+            this.tab2.Groups.Add(this.grpEdit);
             this.tab2.Label = "PowerPointStudio";
             this.tab2.Name = "tab2";
             // 
@@ -59,13 +63,6 @@
             this.Extract.Items.Add(this.btnExtractSlides);
             this.Extract.Label = "Create             ";
             this.Extract.Name = "Extract";
-            // 
-            // preview
-            // 
-            this.preview.Items.Add(this.btnPreviewWeb);
-            this.preview.Items.Add(this.btnPreviewJSON);
-            this.preview.Label = "Preview";
-            this.preview.Name = "preview";
             // 
             // btnExtractSlides
             // 
@@ -77,6 +74,13 @@
             this.btnExtractSlides.SuperTip = "Extract Slides to Generate JSON & HTML";
             this.btnExtractSlides.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExtractSlides_Click);
             // 
+            // preview
+            // 
+            this.preview.Items.Add(this.btnPreviewWeb);
+            this.preview.Items.Add(this.btnPreviewJSON);
+            this.preview.Label = "Preview";
+            this.preview.Name = "preview";
+            // 
             // btnPreviewWeb
             // 
             this.btnPreviewWeb.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -84,7 +88,7 @@
             this.btnPreviewWeb.Label = "Preview Web";
             this.btnPreviewWeb.Name = "btnPreviewWeb";
             this.btnPreviewWeb.ShowImage = true;
-            this.btnPreviewWeb.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnPreviewWeb_Click);
+            //this.btnPreviewWeb.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnPreviewWeb_Click);
             // 
             // btnPreviewJSON
             // 
@@ -94,6 +98,18 @@
             this.btnPreviewJSON.Name = "btnPreviewJSON";
             this.btnPreviewJSON.ShowImage = true;
             this.btnPreviewJSON.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnPreviewJSON_Click);
+            // 
+            // grpEdit
+            // 
+            this.grpEdit.Items.Add(this.ediBxExerKey);
+            this.grpEdit.Label = "Excercise Key";
+            this.grpEdit.Name = "grpEdit";
+            // 
+            // ediBxExerKey
+            // 
+            this.ediBxExerKey.Label = "Exercise Key";
+            this.ediBxExerKey.Name = "ediBxExerKey";
+            this.ediBxExerKey.SuperTip = "Write Excercise Key Here";
             // 
             // PowerPointStudioRibbon
             // 
@@ -107,6 +123,8 @@
             this.Extract.PerformLayout();
             this.preview.ResumeLayout(false);
             this.preview.PerformLayout();
+            this.grpEdit.ResumeLayout(false);
+            this.grpEdit.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -119,6 +137,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup preview;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPreviewWeb;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPreviewJSON;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpEdit;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox ediBxExerKey;
     }
 
     partial class ThisRibbonCollection

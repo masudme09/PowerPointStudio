@@ -7,8 +7,13 @@ namespace PowerPointStudio
    
     public class ezImage
     {
+        [JsonProperty(Order = 1)]
+        public ezCss css { get; set; }
+
+        [JsonProperty(Order = 2)]
         public string imgurlLarge,imgurlMedium,imgurlSmall;
-        public string actualUrl;
+
+        internal string actualUrl;
 
         /// <summary>
         /// Default constructor
@@ -46,6 +51,8 @@ namespace PowerPointStudio
             imgurlLarge = exportedUrl.Replace(PowerPointStudioRibbon.currentPPTPath.Replace("\\","/"), "https://ezilmdev.org");
             imgurlMedium = exportedUrl.Replace(PowerPointStudioRibbon.currentPPTPath.Replace("\\", "/"), "https://ezilmdev.org");
             imgurlSmall = exportedUrl.Replace(PowerPointStudioRibbon.currentPPTPath.Replace("\\", "/"), "https://ezilmdev.org");
+
+            css = new ezCss(shape);
         }
 
         /// <summary>

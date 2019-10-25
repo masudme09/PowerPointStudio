@@ -204,7 +204,7 @@ namespace PowerPointStudio
         {
             var settings = new JsonSerializerSettings()
             {
-                ContractResolver = new OrderedContractResolver(),
+                //ContractResolver = new OrderedContractResolver(),
                 NullValueHandling = NullValueHandling.Ignore
             };
 

@@ -78,18 +78,18 @@ namespace PowerPointStudio
             }
         }
 
-        private void BtnPreviewWeb_Click(object sender, RibbonControlEventArgs e)
-        {
-            if(File.Exists(currentPPTPath + "\\Json.JSON"))
-            {
-                string JSON = File.ReadAllText(currentPPTPath + "\\Json.JSON");
-                HtmlGenerator htmlGenerator = new HtmlGenerator(JSON);
-            }
-            else
-            {
-                System.Windows.Forms.MessageBox.Show("No JSON file found on default directory. Please click on Extract to generate.");
-            }
+        //private void BtnPreviewWeb_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    if(File.Exists(currentPPTPath + "\\Json.JSON"))
+        //    {
+        //        string JSON = File.ReadAllText(currentPPTPath + "\\Json.JSON");
+        //        HtmlGenerator htmlGenerator = new HtmlGenerator(JSON);
+        //    }
+        //    else
+        //    {
+        //        System.Windows.Forms.MessageBox.Show("No JSON file found on default directory. Please click on Extract to generate.");
+        //    }
             
-        }
+        //}
     }
 }

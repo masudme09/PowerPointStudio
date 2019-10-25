@@ -1,4 +1,4 @@
-<Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--
     This section defines project-level properties.
@@ -175,14 +175,19 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ContextMenus.cs" />
+    <Compile Include="dnd.cs" />
     <Compile Include="ezBackGround.cs" />
     <Compile Include="ezCss.cs" />
+    <Compile Include="ezDnd.cs" />
     <Compile Include="ezImage.cs" />
     <Compile Include="ezPresentation.cs" />
     <Compile Include="ezShape.cs" />
     <Compile Include="ezShapes.cs" />
     <Compile Include="ezShapeType.cs" />
     <Compile Include="ezSlide.cs" />
+    <Compile Include="ezSlideAnimation.cs" />
+    <Compile Include="ezSlideAnimations.cs" />
     <Compile Include="ezText.cs" />
     <Compile Include="ezTextStyle.cs" />
     <Compile Include="Group.cs" />
@@ -211,6 +216,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="packages.config" />
+    <None Include="PowerPointStudio_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -230,11 +236,22 @@
     </Compile>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ContextMenus.xml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-   
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>PowerPointStudio_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>FDFF7CC7355B580AB6F5EFCE9A715722D0F55D2E</ManifestCertificateThumbprint>
+  </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Include additional build rules for an Office application add-in. -->

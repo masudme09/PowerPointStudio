@@ -5,28 +5,49 @@ namespace PowerPointStudio
 {
     public class ezShape
     {
-        public string id { get; set; }
+        [JsonProperty(Order = 1)]
+        public string id { get; set; } //shape name
+
+        [JsonProperty(Order = 2)]
         public string @class { get; set; }
-        public ezCss css { get; set; }
-        public ezText text = null;
-        public string audioUrl { get; set; }
+
+        [JsonProperty(Order = 3)]
         public ezImage image;
+       
+        [JsonProperty(Order = 4)]
+        public ezText text = null;
+
+        [JsonProperty(Order = 5)]
+        public string actions { get; set; }//Need to implement
+
+        [JsonProperty(Order = 6)]
+        public string audioUrl { get; set; }
+
+        [JsonProperty(Order = 7)]
+        public string action { get; set; }
+
         internal static int shapeCount=0;
         internal static int mediaCount = 0;//to track number of medias detected
 
         [JsonConstructor]
-        public ezShape()
+        public ezShape(string id,ezImage image, ezText text=null,string @class=null)
         {
-
+            this.id = id;
+            this.image = image;
+            this.text = text;
+            this.@class = @class;
         }
 
 
         public ezShape(Shape shape)
         {
-            id = "sh" + shapeCount;
-            @class = "shape-type-" + shape.AutoShapeType + shapeCount;
-            css = new ezCss(shape);
-            text = new ezText(shape);
+            id = "sh" + shape.Name;
+            @class = "temp"; //need to get it from alt text. if not found default is 'temp'
+            if(shape.AlternativeText.Contains("$class$"))
+            {
+                @class = classFinder(shape.AlternativeText);
+            }
+            //text = new ezText(shape); //Need to its structure..When instructed
 
             if (shape.Type == Microsoft.Office.Core.MsoShapeType.msoMedia && shape.MediaType == PpMediaType.ppMediaTypeSound)
             {
@@ -43,6 +64,15 @@ namespace PowerPointStudio
             
 
             shapeCount++;
+        }
+
+        private string classFinder(string altText)
+        {
+            string classContain = null;
+
+            classContain = altText.Substring(altText.IndexOf("$class$")+7, (altText.IndexOf("$$class$$")- (altText.IndexOf("$class$")+7))); //It is returning first character index of the searched string
+
+            return classContain;
         }
     }
 }
