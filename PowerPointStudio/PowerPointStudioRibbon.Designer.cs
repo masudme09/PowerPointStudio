@@ -37,12 +37,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PowerPointStudioRibbon));
             this.tab2 = this.Factory.CreateRibbonTab();
             this.Extract = this.Factory.CreateRibbonGroup();
-            this.btnExtractSlides = this.Factory.CreateRibbonButton();
             this.preview = this.Factory.CreateRibbonGroup();
-            this.btnPreviewWeb = this.Factory.CreateRibbonButton();
-            this.btnPreviewJSON = this.Factory.CreateRibbonButton();
             this.grpEdit = this.Factory.CreateRibbonGroup();
             this.ediBxExerKey = this.Factory.CreateRibbonEditBox();
+            this.btnExtractSlides = this.Factory.CreateRibbonButton();
+            this.btnExtractAudio = this.Factory.CreateRibbonButton();
+            this.btnPreviewWeb = this.Factory.CreateRibbonButton();
+            this.btnPreviewJSON = this.Factory.CreateRibbonButton();
+            this.btnPreviewCSV = this.Factory.CreateRibbonButton();
             this.tab2.SuspendLayout();
             this.Extract.SuspendLayout();
             this.preview.SuspendLayout();
@@ -53,51 +55,25 @@
             // 
             this.tab2.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab2.Groups.Add(this.Extract);
-            this.tab2.Groups.Add(this.preview);
             this.tab2.Groups.Add(this.grpEdit);
+            this.tab2.Groups.Add(this.preview);
             this.tab2.Label = "PowerPointStudio";
             this.tab2.Name = "tab2";
             // 
             // Extract
             // 
             this.Extract.Items.Add(this.btnExtractSlides);
+            this.Extract.Items.Add(this.btnExtractAudio);
             this.Extract.Label = "Create             ";
             this.Extract.Name = "Extract";
-            // 
-            // btnExtractSlides
-            // 
-            this.btnExtractSlides.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnExtractSlides.Image = ((System.Drawing.Image)(resources.GetObject("btnExtractSlides.Image")));
-            this.btnExtractSlides.Label = "ExtarctSlides ";
-            this.btnExtractSlides.Name = "btnExtractSlides";
-            this.btnExtractSlides.ShowImage = true;
-            this.btnExtractSlides.SuperTip = "Extract Slides to Generate JSON & HTML";
-            this.btnExtractSlides.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExtractSlides_Click);
             // 
             // preview
             // 
             this.preview.Items.Add(this.btnPreviewWeb);
             this.preview.Items.Add(this.btnPreviewJSON);
+            this.preview.Items.Add(this.btnPreviewCSV);
             this.preview.Label = "Preview";
             this.preview.Name = "preview";
-            // 
-            // btnPreviewWeb
-            // 
-            this.btnPreviewWeb.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnPreviewWeb.Image = ((System.Drawing.Image)(resources.GetObject("btnPreviewWeb.Image")));
-            this.btnPreviewWeb.Label = "Preview Web";
-            this.btnPreviewWeb.Name = "btnPreviewWeb";
-            this.btnPreviewWeb.ShowImage = true;
-            //this.btnPreviewWeb.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnPreviewWeb_Click);
-            // 
-            // btnPreviewJSON
-            // 
-            this.btnPreviewJSON.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnPreviewJSON.Image = ((System.Drawing.Image)(resources.GetObject("btnPreviewJSON.Image")));
-            this.btnPreviewJSON.Label = "Preview JSON";
-            this.btnPreviewJSON.Name = "btnPreviewJSON";
-            this.btnPreviewJSON.ShowImage = true;
-            this.btnPreviewJSON.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnPreviewJSON_Click);
             // 
             // grpEdit
             // 
@@ -110,6 +86,52 @@
             this.ediBxExerKey.Label = "Exercise Key";
             this.ediBxExerKey.Name = "ediBxExerKey";
             this.ediBxExerKey.SuperTip = "Write Excercise Key Here";
+            this.ediBxExerKey.Text = null;
+            // 
+            // btnExtractSlides
+            // 
+            this.btnExtractSlides.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnExtractSlides.Image = ((System.Drawing.Image)(resources.GetObject("btnExtractSlides.Image")));
+            this.btnExtractSlides.Label = "ExtarctSlides ";
+            this.btnExtractSlides.Name = "btnExtractSlides";
+            this.btnExtractSlides.ShowImage = true;
+            this.btnExtractSlides.SuperTip = "Extract Slides to Generate JSON & HTML";
+            this.btnExtractSlides.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExtractSlides_Click);
+            // 
+            // btnExtractAudio
+            // 
+            this.btnExtractAudio.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnExtractAudio.Image = global::PowerPointStudio.Properties.Resources.All2MP3forWindows_logo;
+            this.btnExtractAudio.Label = "Extract Audio";
+            this.btnExtractAudio.Name = "btnExtractAudio";
+            this.btnExtractAudio.ShowImage = true;
+            this.btnExtractAudio.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExtractAudio_Click);
+            // 
+            // btnPreviewWeb
+            // 
+            this.btnPreviewWeb.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnPreviewWeb.Image = ((System.Drawing.Image)(resources.GetObject("btnPreviewWeb.Image")));
+            this.btnPreviewWeb.Label = "Preview Web";
+            this.btnPreviewWeb.Name = "btnPreviewWeb";
+            this.btnPreviewWeb.ShowImage = true;
+            // 
+            // btnPreviewJSON
+            // 
+            this.btnPreviewJSON.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnPreviewJSON.Image = ((System.Drawing.Image)(resources.GetObject("btnPreviewJSON.Image")));
+            this.btnPreviewJSON.Label = "Preview JSON";
+            this.btnPreviewJSON.Name = "btnPreviewJSON";
+            this.btnPreviewJSON.ShowImage = true;
+            this.btnPreviewJSON.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnPreviewJSON_Click);
+            // 
+            // btnPreviewCSV
+            // 
+            this.btnPreviewCSV.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnPreviewCSV.Image = global::PowerPointStudio.Properties.Resources.x_17_512;
+            this.btnPreviewCSV.Label = "Preview CSV";
+            this.btnPreviewCSV.Name = "btnPreviewCSV";
+            this.btnPreviewCSV.ShowImage = true;
+            this.btnPreviewCSV.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnPreviewCSV_Click);
             // 
             // PowerPointStudioRibbon
             // 
@@ -139,6 +161,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPreviewJSON;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpEdit;
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox ediBxExerKey;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPreviewCSV;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExtractAudio;
     }
 
     partial class ThisRibbonCollection

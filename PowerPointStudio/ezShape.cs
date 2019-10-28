@@ -1,4 +1,6 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System;
+using System.Text.RegularExpressions;
+using Microsoft.Office.Interop.PowerPoint;
 using Newtonsoft.Json;
 
 namespace PowerPointStudio
@@ -18,13 +20,10 @@ namespace PowerPointStudio
         public ezText text = null;
 
         [JsonProperty(Order = 5)]
-        public string actions { get; set; }//Need to implement
+        public ezAction actions { get; set; }//Need to implement
 
         [JsonProperty(Order = 6)]
-        public string audioUrl { get; set; }
-
-        [JsonProperty(Order = 7)]
-        public string action { get; set; }
+        public string audioUrl { get; set; }           
 
         internal static int shapeCount=0;
         internal static int mediaCount = 0;//to track number of medias detected
@@ -41,7 +40,9 @@ namespace PowerPointStudio
 
         public ezShape(Shape shape)
         {
-            id = "sh" + shape.Name;
+            //Qulify shape Name
+            string qulifiedShapeName = Utility.qulifiedNameGenerator(shape.Name);
+            id = "sh" + qulifiedShapeName;
             @class = "temp"; //need to get it from alt text. if not found default is 'temp'
             if(shape.AlternativeText.Contains("$class$"))
             {
@@ -62,10 +63,98 @@ namespace PowerPointStudio
 
             image = new ezImage(shape);
             
+            //Handle placement
+            if(shape.AlternativeText.Contains("$Placement$"))
+            {
+                handlePlacement(shape);
+            }
+
+            actions = new ezAction(shape);
 
             shapeCount++;
         }
 
+        private void handlePlacement(Shape shape)
+        {
+            //find placement text
+            string placementText = shape.AlternativeText;
+            placementText = "{"+placementText.Substring(placementText.IndexOf("$Placement$") + 11, (placementText.IndexOf("$$Placement$$")- (placementText.IndexOf("$Placement$") + 11)))+"}";
+            ezPlacement placement = Newtonsoft.Json.JsonConvert.DeserializeObject<ezPlacement>(placementText);
+
+            Presentation presentation = shape.Parent.Parent; //Getting the presentation object
+            shape.AlternativeText = (Regex.Replace(shape.AlternativeText, @"\t|\n|\r", "")).Trim();
+            string placeText = shape.AlternativeText;
+            placeText = placeText.Substring(placeText.IndexOf("$Placement$") + 11, (placeText.IndexOf("$$Placement$$") - (placeText.IndexOf("$Placement$") + 11)));
+
+            string toReplace = ("$Placement$" + placeText + "$$Placement$$").Trim();
+
+            shape.AlternativeText = shape.AlternativeText.Replace(toReplace, "");
+            shape.Copy();
+            int slideIndex = shape.Parent.SlideIndex;
+
+            switch (placement.onSlide)
+            {
+                case ezOnSlide.every:
+                    //Copy this shape to every other shape to the same location except the placement string on alt text
+                   
+                    foreach (Slide sld in presentation.Slides)
+                    {
+                        if(sld.SlideIndex!=slideIndex)
+                        {
+                            sld.Shapes.Paste();
+                        }
+                        
+                    }
+
+                    break;
+                case ezOnSlide.exceptFirst:
+                    foreach (Slide sld in presentation.Slides)
+                    {
+                        if (sld.SlideIndex != slideIndex && sld.SlideIndex != 1)
+                        {
+                            sld.Shapes.Paste();
+                        }
+
+                    }
+
+                    break;
+                case ezOnSlide.exceptLast:
+                    foreach (Slide sld in presentation.Slides)
+                    {
+                        if (sld.SlideIndex != slideIndex && sld.SlideIndex != presentation.Slides.Count)
+                        {
+                            sld.Shapes.Paste();
+                        }
+
+                    }
+                    break;
+                case ezOnSlide.evenPages:
+                    foreach (Slide sld in presentation.Slides)
+                    {
+                        if (sld.SlideIndex != slideIndex && (sld.SlideIndex/2.0)==0)
+                        {
+                            sld.Shapes.Paste();
+                        }
+
+                    }
+                    break;
+                case ezOnSlide.oddPages:
+                    foreach (Slide sld in presentation.Slides)
+                    {
+                        if (sld.SlideIndex != slideIndex && (sld.SlideIndex / 2.0) != 0)
+                        {
+                            sld.Shapes.Paste();
+                        }
+
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+       
         private string classFinder(string altText)
         {
             string classContain = null;

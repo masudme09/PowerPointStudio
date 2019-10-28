@@ -17,7 +17,7 @@ namespace PowerPointStudio
 
         public ezBackGround(Slide sld )
         {
-            id = "SlideBackGround" + backgroundCount;
+            id = "SlideBackGround";
             ezCss css = new ezCss(576, 420, 0, 0);
             image = new ezImage(sld);
             image.css = css;

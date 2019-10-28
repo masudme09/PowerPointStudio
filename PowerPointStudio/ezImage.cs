@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Interop.PowerPoint;
 using Newtonsoft.Json;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace PowerPointStudio
 {
@@ -40,8 +41,17 @@ namespace PowerPointStudio
             //Need to set rotation property 0 before export then set back to original
             float originalRotation = shape.Rotation;
             shape.Rotation = 0;
-            string exportedUrl = shapeExportDirectory + "\\" + Utility.RandomNumber(1000, 10000, ezShape.shapeCount) + ".png";
-            shape.Export(exportedUrl, PpShapeFormat.ppShapeFormatPNG, slideWidth * 4, slideHeight * 4, PpExportMode.ppClipRelativeToSlide);
+            string exportedUrl;
+            //shape name may contain character that are not qualify as file name so need to remove those
+            //Qulify shape Name
+            string qulifiedShapeName = Utility.qulifiedNameGenerator(shape.Name);
+            exportedUrl = shapeExportDirectory + "\\" + qulifiedShapeName + ".png";
+
+            if (!File.Exists(exportedUrl))
+            {                
+                shape.Export(exportedUrl, PpShapeFormat.ppShapeFormatPNG, slideWidth * 4, slideHeight * 4, PpExportMode.ppClipRelativeToSlide);
+            }
+                       
             //Back rotation to original
             shape.Rotation = originalRotation;
 

@@ -177,10 +177,13 @@
   <ItemGroup>
     <Compile Include="ContextMenus.cs" />
     <Compile Include="dnd.cs" />
+    <Compile Include="ezAction.cs" />
     <Compile Include="ezBackGround.cs" />
     <Compile Include="ezCss.cs" />
     <Compile Include="ezDnd.cs" />
     <Compile Include="ezImage.cs" />
+    <Compile Include="ezOnSlide.cs" />
+    <Compile Include="ezPlacement.cs" />
     <Compile Include="ezPresentation.cs" />
     <Compile Include="ezShape.cs" />
     <Compile Include="ezShapes.cs" />
@@ -214,6 +217,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="PowerPointStudio_TemporaryKey.pfx" />
@@ -238,6 +242,15 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ContextMenus.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x-17-512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Audio_cd_extract_mp3_open_video-512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\All2MP3forWindows_logo.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

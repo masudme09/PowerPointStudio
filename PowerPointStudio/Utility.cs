@@ -8,7 +8,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using DataTable = System.Data.DataTable;
 
 namespace PowerPointStudio
 {
@@ -83,14 +85,18 @@ namespace PowerPointStudio
                 Directory.Delete(presentation.Path + "\\Medias", true);
             }
             Directory.CreateDirectory(presentation.Path + "\\Medias");//Creating Medias directory
-            foreach(string file in Directory.GetFiles(Path.GetDirectoryName(mediaPath) + "\\Extract" + @"\ppt\media\"))
+
+            if (Directory.Exists(Path.GetDirectoryName(mediaPath) + "\\Extract" + @"\ppt\media\"))
             {
-                string fileName = file.Replace(Path.GetDirectoryName(mediaPath) + "\\Extract" + @"\ppt\media\", "");
-                if (fileName.Contains("media")|| fileName.Contains("audio"))
+                foreach (string file in Directory.GetFiles(Path.GetDirectoryName(mediaPath) + "\\Extract" + @"\ppt\media\"))
                 {
-                    File.Copy(file, presentation.Path + "\\Medias\\" + fileName);
+                    string fileName = file.Replace(Path.GetDirectoryName(mediaPath) + "\\Extract" + @"\ppt\media\", "");
+                    if (fileName.Contains("media") || fileName.Contains("audio"))
+                    {
+                        File.Copy(file, presentation.Path + "\\Medias\\" + fileName);
+                    }
+
                 }
-               
             }
 
             //Deleting the media directory with all contents
@@ -224,6 +230,70 @@ namespace PowerPointStudio
             File.WriteAllText(filePathWithExtension, json);
         }
 
+        public static string qulifiedNameGenerator(string unqualifiedName)
+        {
+            string qualifiedName = (Regex.Replace(unqualifiedName, @"\t|\n|\r|-|/|\\|:|", ""));
+            qualifiedName = qualifiedName.Replace(" ", "");
+            return qualifiedName;
+        }
+        /// <summary>
+        /// Send shape ezLang here and it will find out text on on corresponding tag
+        /// </summary>
+        /// <param name="altText"></param>
+        /// <param name="searchedTag"></param>
+        /// <returns></returns>
+        public static string ezLangFinder(string altText, string searchedTag) 
+        {
+            string text = null;
+
+            text = altText.Substring(altText.IndexOf("$"+searchedTag+"$") + (searchedTag.Length+2), (altText.IndexOf("$$"+searchedTag+"$$") - (altText.IndexOf("$" + searchedTag + "$") + (searchedTag.Length + 2)))); //It is returning first character index of the searched string
+
+            return text;
+        }
+        /// <summary>
+        /// Export Datatable to CSV 
+        /// </summary>
+        /// <param name="dtDataTable"></param>
+        /// <param name="strFilePath"></param>
+        public static void ToCSV(DataTable dtDataTable, string strFilePath)
+        {
+            StreamWriter sw = new StreamWriter(strFilePath, false);
+            //headers  
+            for (int i = 0; i < dtDataTable.Columns.Count; i++)
+            {
+                sw.Write(dtDataTable.Columns[i]);
+                if (i < dtDataTable.Columns.Count - 1)
+                {
+                    sw.Write(",");
+                }
+            }
+            sw.Write(sw.NewLine);
+            foreach (System.Data.DataRow dr in dtDataTable.Rows)
+            {
+                for (int i = 0; i < dtDataTable.Columns.Count; i++)
+                {
+                    if (!Convert.IsDBNull(dr[i]))
+                    {
+                        string value = dr[i].ToString();
+                        if (value.Contains(','))
+                        {
+                            value = String.Format("\"{0}\"", value);
+                            sw.Write(value);
+                        }
+                        else
+                        {
+                            sw.Write(dr[i].ToString());
+                        }
+                    }
+                    if (i < dtDataTable.Columns.Count - 1)
+                    {
+                        sw.Write(",");
+                    }
+                }
+                sw.Write(sw.NewLine);
+            }
+            sw.Close();
+        }
 
     }
 
