@@ -42,16 +42,34 @@ namespace PowerPointStudio
                 //Copying this presentation to the same original directory with temp name
                 //All the work will be done on the copied presentation
                 //So not visible to user
-
-                while (Directory.Exists(pptPath + @"\temp"))
+                if(File.Exists(pptPath + @"\temp\CSV.csv"))
                 {
+                    try
+                    {
+                        File.Delete(pptPath + @"\temp\CSV.csv");
+                        if(File.Exists(pptPath + @"\temp\Json.JSON"))
+                        {
+                            File.Delete(pptPath + @"\temp\Json.JSON");
+                        }
+                       
+                    }
+                    catch
+                    {
+                        System.Windows.Forms.MessageBox.Show("Please close the CSV or JSON file if already opened");
+                    }
+                }
+
+                               
+                while (Directory.Exists(pptPath + @"\temp")) 
+                {
+                    //Waiting until the temp directory is successfully deleted
                     try
                     {
                         Directory.Delete(pptPath + @"\temp", true);
                     }
                     catch (Exception err)
                     {
-                        System.Windows.Forms.MessageBox.Show(err.ToString());
+                       // MessageBox.Show(err.ToString());
                     }
                 }
 
@@ -77,6 +95,8 @@ namespace PowerPointStudio
                 //Close the presentation
                 tempPresentation.Close();
                 System.Windows.Forms.MessageBox.Show("Extraction Complete");
+
+                Utility.staticResourceClear();
             }
             else
             {

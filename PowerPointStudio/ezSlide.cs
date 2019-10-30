@@ -11,7 +11,7 @@ namespace PowerPointStudio
         public string sid { get; set; }  //Get from textbox
 
         [JsonProperty(Order = 2)]
-        public List<object> slide=new List<object>(); 
+        public object slide=new object(); 
 
         [JsonProperty(Order = 3)]
         public ezShapes<ezShape> shapes = new ezShapes<ezShape>();
@@ -43,7 +43,7 @@ namespace PowerPointStudio
             ezBackGround backGround = new ezBackGround(slide);
             ezShape backgroundShape = new ezShape(backGround.id, backGround.image,null,"temp");
             shapes.Add(backgroundShape);
-
+            
 
             //Assigning ezShape to shapes
             foreach (Shape shape in slide.Shapes)

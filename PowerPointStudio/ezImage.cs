@@ -28,41 +28,50 @@ namespace PowerPointStudio
 
         public ezImage(Shape shape)
         {
-            //Export the image of the shape
-            int slideWidth = (int)Utility.SlideWidthGet((shape.Parent).Parent);
-            int slideHeight = (int)Utility.SlideHeightGet((shape.Parent).Parent);
-
-            string shapeExportDirectory = PowerPointStudioRibbon.currentPPTPath + "\\images";
-            if(!Directory.Exists(shapeExportDirectory))
+            if (shape.Type == Microsoft.Office.Core.MsoShapeType.msoMedia && shape.MediaType == PpMediaType.ppMediaTypeSound)
             {
-                Directory.CreateDirectory(shapeExportDirectory);
+                css = new ezCss(shape);
             }
+            else
+            {
+                //Export the image of the shape
+                int slideWidth = (int)Utility.SlideWidthGet((shape.Parent).Parent);
+                int slideHeight = (int)Utility.SlideHeightGet((shape.Parent).Parent);
 
-            //Need to set rotation property 0 before export then set back to original
-            float originalRotation = shape.Rotation;
-            shape.Rotation = 0;
-            string exportedUrl;
-            //shape name may contain character that are not qualify as file name so need to remove those
-            //Qulify shape Name
-            string qulifiedShapeName = Utility.qulifiedNameGenerator(shape.Name);
-            exportedUrl = shapeExportDirectory + "\\" + qulifiedShapeName + ".png";
+                string shapeExportDirectory = PowerPointStudioRibbon.currentPPTPath + "\\images";
+                if (!Directory.Exists(shapeExportDirectory))
+                {
+                    Directory.CreateDirectory(shapeExportDirectory);
+                }
 
-            if (!File.Exists(exportedUrl))
-            {                
-                shape.Export(exportedUrl, PpShapeFormat.ppShapeFormatPNG, slideWidth * 4, slideHeight * 4, PpExportMode.ppClipRelativeToSlide);
+                //Need to set rotation property 0 before export then set back to original
+                float originalRotation = shape.Rotation;
+                shape.Rotation = 0;
+                string exportedUrl;
+                //shape name may contain character that are not qualify as file name so need to remove those
+                //Qulify shape Name
+                string qulifiedShapeName = Utility.qulifiedNameGenerator(shape.Name);
+                exportedUrl = shapeExportDirectory + "\\" + qulifiedShapeName + ".png";
+
+                if (!File.Exists(exportedUrl))
+                {
+                    shape.Export(exportedUrl, PpShapeFormat.ppShapeFormatPNG, slideWidth * 4, slideHeight * 4, PpExportMode.ppClipRelativeToSlide);
+                }
+
+                //Back rotation to original
+                shape.Rotation = originalRotation;
+
+                actualUrl = exportedUrl;
+                exportedUrl = exportedUrl.Replace("\\", "/");
+
+                imgurlLarge = exportedUrl.Replace(PowerPointStudioRibbon.currentPPTPath.Replace("\\", "/"), "https://ezilmdev.org");
+                imgurlMedium = exportedUrl.Replace(PowerPointStudioRibbon.currentPPTPath.Replace("\\", "/"), "https://ezilmdev.org");
+                imgurlSmall = exportedUrl.Replace(PowerPointStudioRibbon.currentPPTPath.Replace("\\", "/"), "https://ezilmdev.org");
+
+                css = new ezCss(shape);
+
             }
-                       
-            //Back rotation to original
-            shape.Rotation = originalRotation;
-
-            actualUrl = exportedUrl;
-            exportedUrl = exportedUrl.Replace("\\", "/");
-
-            imgurlLarge = exportedUrl.Replace(PowerPointStudioRibbon.currentPPTPath.Replace("\\","/"), "https://ezilmdev.org");
-            imgurlMedium = exportedUrl.Replace(PowerPointStudioRibbon.currentPPTPath.Replace("\\", "/"), "https://ezilmdev.org");
-            imgurlSmall = exportedUrl.Replace(PowerPointStudioRibbon.currentPPTPath.Replace("\\", "/"), "https://ezilmdev.org");
-
-            css = new ezCss(shape);
+           
         }
 
         /// <summary>

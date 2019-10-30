@@ -10,12 +10,13 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
 using DataTable = System.Data.DataTable;
 
 namespace PowerPointStudio
 {
     public static class Utility
-    {
+    {       
         /// <summary>
         /// Takes shape and return its type
         /// </summary>
@@ -84,8 +85,21 @@ namespace PowerPointStudio
             {
                 Directory.Delete(presentation.Path + "\\Medias", true);
             }
-            Directory.CreateDirectory(presentation.Path + "\\Medias");//Creating Medias directory
+            while(!Directory.Exists(presentation.Path + "\\Medias"))
+            {
+                Directory.CreateDirectory(presentation.Path + "\\Medias");//Creating Medias directory
+            }
 
+            //Copy the slides directory to different location
+            if (Directory.Exists(Path.GetDirectoryName(mediaPath) + "\\Extract" + @"\ppt\slides\"))
+            {
+
+                Copy(Path.GetDirectoryName(mediaPath) + "\\Extract" + @"\ppt\slides\", presentation.Path + "\\Medias\\Slides");
+                 
+            }
+
+
+            //COpying the audio or media file to different location
             if (Directory.Exists(Path.GetDirectoryName(mediaPath) + "\\Extract" + @"\ppt\media\"))
             {
                 foreach (string file in Directory.GetFiles(Path.GetDirectoryName(mediaPath) + "\\Extract" + @"\ppt\media\"))
@@ -99,7 +113,7 @@ namespace PowerPointStudio
                 }
             }
 
-            //Deleting the media directory with all contents
+            //Deleting the media directory with all contents or extraction directory
             if (Directory.Exists(presentation.Path + "\\Media"))
             {
                 Directory.Delete(presentation.Path + "\\Media", true);
@@ -108,25 +122,87 @@ namespace PowerPointStudio
             return presentation.Path + "\\Medias";
         }
 
+        /// <summary>
+        /// Copy all files and folders from a directory
+        /// </summary>
+        /// <param name="sourceDirectory"></param>
+        /// <param name="targetDirectory"></param>
+        public static void Copy(string sourceDirectory, string targetDirectory)
+        {
+            DirectoryInfo diSource = new DirectoryInfo(sourceDirectory);
+            DirectoryInfo diTarget = new DirectoryInfo(targetDirectory);
+
+            CopyAll(diSource, diTarget);
+        }
+
+        public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
+        {
+            Directory.CreateDirectory(target.FullName);
+
+            // Copy each file into the new directory.
+            foreach (FileInfo fi in source.GetFiles())
+            {
+                Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
+                fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
+            }
+
+            // Copy each subdirectory using recursion.
+            foreach (DirectoryInfo diSourceSubDir in source.GetDirectories())
+            {
+                DirectoryInfo nextTargetSubDir =
+                    target.CreateSubdirectory(diSourceSubDir.Name);
+                CopyAll(diSourceSubDir, nextTargetSubDir);
+            }
+        }
+
+
 
         /// <summary>
         /// Return url of the media that have same audio id
         /// </summary>
         /// <param name="audioId"></param>
         /// <returns></returns>
-        public static string getExtractedAudioUrl(int audioId)
+        public static string getExtractedAudioUrl(Shape mediaShape) //Need to use from open xml
         {
             string mediaDirectory = PowerPointStudioRibbon.mediaPath;
-           
-            foreach(string file in Directory.GetFiles(mediaDirectory))
+            string mediaShapeName = mediaShape.Name;
+
+            //Read from xml to know which media file its is targeting
+            int slideIndex = mediaShape.Parent.SlideIndex;
+            string r_link="";
+            XmlDocument doc = new XmlDocument();
+            doc.Load(mediaDirectory+ "\\Slides\\slide"+slideIndex+".xml");
+
+            XmlNodeList elemList = doc.GetElementsByTagName("p:pic");
+            foreach (XmlNode elem in elemList)
             {
-                string fileName = file.Replace(mediaDirectory, "");
-                if(fileName.Contains("audio"+audioId)||fileName.Contains("media"+audioId))
+                if(elem.ChildNodes[0].ChildNodes[0].Attributes["name"].Value==mediaShapeName)
                 {
-                    return file;
+                    if (elem.InnerXml.Contains("audioFile"))
+                    {
+                        r_link = elem.ChildNodes[0].ChildNodes[2].ChildNodes[0].Attributes["r:link"].Value;
+                        break;
+                    }
+                    else
+                    {
+                        r_link = "";
+                    }
+                }
+                
+            }
+
+            string mediaName="";
+            doc.Load(mediaDirectory + "\\Slides\\_rels\\slide" + slideIndex + ".xml.rels");
+            XmlNodeList elems = doc.GetElementsByTagName("Relationship");
+            foreach (XmlNode elem in elems)
+            {
+                if(elem.Attributes["Id"].Value==r_link)
+                {
+                    mediaName = (elem.Attributes["Target"].Value).Split('/')[(elem.Attributes["Target"].Value).Split('/').Length-1];
                 }
             }
-            return null;
+            return mediaDirectory+@"\"+mediaName;
+
         }
 
 
@@ -214,7 +290,7 @@ namespace PowerPointStudio
                 NullValueHandling = NullValueHandling.Ignore
             };
 
-            var json = JsonConvert.SerializeObject(obj, Formatting.Indented, settings);
+            var json = JsonConvert.SerializeObject(obj, Newtonsoft.Json.Formatting.Indented, settings);
 
             return json;
         }
@@ -293,6 +369,14 @@ namespace PowerPointStudio
                 sw.Write(sw.NewLine);
             }
             sw.Close();
+        }
+
+        /// <summary>
+        /// This method will clear all static resource that is not required after extraction is complete
+        /// </summary>
+        public static void staticResourceClear()
+        {
+           
         }
 
     }

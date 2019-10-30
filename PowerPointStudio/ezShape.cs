@@ -20,7 +20,7 @@ namespace PowerPointStudio
         public ezText text = null;
 
         [JsonProperty(Order = 5)]
-        public ezAction actions { get; set; }//Need to implement
+        public ezAction actions { get; set; }
 
         [JsonProperty(Order = 6)]
         public string audioUrl { get; set; }           
@@ -52,8 +52,8 @@ namespace PowerPointStudio
 
             if (shape.Type == Microsoft.Office.Core.MsoShapeType.msoMedia && shape.MediaType == PpMediaType.ppMediaTypeSound)
             {
-                mediaCount = mediaCount + 1;
-                audioUrl = Utility.getExtractedAudioUrl(mediaCount);
+                
+                audioUrl = Utility.getExtractedAudioUrl(shape);
                 if (audioUrl != null)
                 {
                     this.audioUrl = audioUrl;
