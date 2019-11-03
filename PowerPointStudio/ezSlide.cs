@@ -91,11 +91,13 @@ namespace PowerPointStudio
             placeText = placeText.Substring(placeText.IndexOf("$Placement$") + 11, (placeText.IndexOf("$$Placement$$") - (placeText.IndexOf("$Placement$") + 11)));
 
             string toReplace = ("$Placement$" + placeText + "$$Placement$$").Trim();
-            shape.Duplicate();
-            Shape addedDuplicate = shape.Parent.Shapes[shape.Parent.Shapes.Count];
+            shape.AlternativeText = shape.AlternativeText.Replace(toReplace, "");
+            
+            shape.Copy();
+            //Shape addedDuplicate = shape.Parent.Shapes[shape.Parent.Shapes.Count];
 
-            addedDuplicate.AlternativeText = shape.AlternativeText.Replace(toReplace, "");
-            addedDuplicate.Copy();
+            
+            //addedDuplicate.Copy();
             int slideIndex = shape.Parent.SlideIndex;
 
             switch (placement.onSlide)
@@ -111,7 +113,7 @@ namespace PowerPointStudio
                         }
 
                     }
-
+                    //addedDuplicate.Delete();
                     break;
                 case ezOnSlide.exceptFirst:
                     foreach (Slide sld in presentation.Slides)
@@ -122,7 +124,7 @@ namespace PowerPointStudio
                         }
 
                     }
-                    addedDuplicate.Delete();
+                    //addedDuplicate.Delete();
                     break;
                 case ezOnSlide.exceptLast:
                     foreach (Slide sld in presentation.Slides)
@@ -133,26 +135,31 @@ namespace PowerPointStudio
                         }
 
                     }
+                    //addedDuplicate.Delete();
                     break;
                 case ezOnSlide.evenPages:
                     foreach (Slide sld in presentation.Slides)
                     {
-                        if (sld.SlideIndex != slideIndex && (sld.SlideIndex / 2.0) == 0)
+                        int evenCheck = sld.SlideIndex % 2;
+                        if (sld.SlideIndex != slideIndex && evenCheck == 0)
                         {
                             sld.Shapes.Paste();
                         }
 
                     }
+                    //addedDuplicate.Delete();
                     break;
                 case ezOnSlide.oddPages:
                     foreach (Slide sld in presentation.Slides)
                     {
-                        if (sld.SlideIndex != slideIndex && (sld.SlideIndex / 2.0) != 0)
+                        int oddCheck = sld.SlideIndex % 2;
+                        if (sld.SlideIndex != slideIndex && oddCheck != 0)
                         {
                             sld.Shapes.Paste();
                         }
 
                     }
+                    //addedDuplicate.Delete();
                     break;
                 default:
                     break;
