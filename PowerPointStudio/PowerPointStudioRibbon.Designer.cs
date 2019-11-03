@@ -37,18 +37,21 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PowerPointStudioRibbon));
             this.tab2 = this.Factory.CreateRibbonTab();
             this.Extract = this.Factory.CreateRibbonGroup();
-            this.preview = this.Factory.CreateRibbonGroup();
             this.grpEdit = this.Factory.CreateRibbonGroup();
             this.ediBxExerKey = this.Factory.CreateRibbonEditBox();
+            this.preview = this.Factory.CreateRibbonGroup();
+            this.grpSettings = this.Factory.CreateRibbonGroup();
             this.btnExtractSlides = this.Factory.CreateRibbonButton();
             this.btnExtractAudio = this.Factory.CreateRibbonButton();
             this.btnPreviewWeb = this.Factory.CreateRibbonButton();
             this.btnPreviewJSON = this.Factory.CreateRibbonButton();
             this.btnPreviewCSV = this.Factory.CreateRibbonButton();
+            this.btnSettings = this.Factory.CreateRibbonButton();
             this.tab2.SuspendLayout();
             this.Extract.SuspendLayout();
-            this.preview.SuspendLayout();
             this.grpEdit.SuspendLayout();
+            this.preview.SuspendLayout();
+            this.grpSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab2
@@ -57,6 +60,7 @@
             this.tab2.Groups.Add(this.Extract);
             this.tab2.Groups.Add(this.grpEdit);
             this.tab2.Groups.Add(this.preview);
+            this.tab2.Groups.Add(this.grpSettings);
             this.tab2.Label = "PowerPointStudio";
             this.tab2.Name = "tab2";
             // 
@@ -66,14 +70,6 @@
             this.Extract.Items.Add(this.btnExtractAudio);
             this.Extract.Label = "Create             ";
             this.Extract.Name = "Extract";
-            // 
-            // preview
-            // 
-            this.preview.Items.Add(this.btnPreviewWeb);
-            this.preview.Items.Add(this.btnPreviewJSON);
-            this.preview.Items.Add(this.btnPreviewCSV);
-            this.preview.Label = "Preview";
-            this.preview.Name = "preview";
             // 
             // grpEdit
             // 
@@ -87,6 +83,20 @@
             this.ediBxExerKey.Name = "ediBxExerKey";
             this.ediBxExerKey.SuperTip = "Write Excercise Key Here";
             this.ediBxExerKey.Text = null;
+            // 
+            // preview
+            // 
+            this.preview.Items.Add(this.btnPreviewWeb);
+            this.preview.Items.Add(this.btnPreviewJSON);
+            this.preview.Items.Add(this.btnPreviewCSV);
+            this.preview.Label = "Preview";
+            this.preview.Name = "preview";
+            // 
+            // grpSettings
+            // 
+            this.grpSettings.Items.Add(this.btnSettings);
+            this.grpSettings.Label = "Settings";
+            this.grpSettings.Name = "grpSettings";
             // 
             // btnExtractSlides
             // 
@@ -133,6 +143,15 @@
             this.btnPreviewCSV.ShowImage = true;
             this.btnPreviewCSV.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnPreviewCSV_Click);
             // 
+            // btnSettings
+            // 
+            this.btnSettings.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSettings.Image = global::PowerPointStudio.Properties.Resources.settings_icon_29;
+            this.btnSettings.Label = "Settings";
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.ShowImage = true;
+            this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
+            // 
             // PowerPointStudioRibbon
             // 
             this.Name = "PowerPointStudioRibbon";
@@ -143,10 +162,12 @@
             this.tab2.PerformLayout();
             this.Extract.ResumeLayout(false);
             this.Extract.PerformLayout();
-            this.preview.ResumeLayout(false);
-            this.preview.PerformLayout();
             this.grpEdit.ResumeLayout(false);
             this.grpEdit.PerformLayout();
+            this.preview.ResumeLayout(false);
+            this.preview.PerformLayout();
+            this.grpSettings.ResumeLayout(false);
+            this.grpSettings.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -163,6 +184,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox ediBxExerKey;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPreviewCSV;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExtractAudio;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpSettings;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
     }
 
     partial class ThisRibbonCollection

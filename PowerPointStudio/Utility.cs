@@ -231,7 +231,7 @@ namespace PowerPointStudio
 
 
         //COnverts image close to 300dpi
-        public static void CustomDpi(Bitmap original, int new_wid, int new_hgt, string savingPathWithExtension)
+        public static void CustomDpi(Bitmap original, int new_wid, int new_hgt,int dpi, string savingPathWithExtension)
         {
             Bitmap returnBmp;
             using (Graphics gr = Graphics.FromImage(original))
@@ -257,10 +257,15 @@ namespace PowerPointStudio
                     gr.DrawImage(original, points);
                     //gr.Dispose();
                 }
-                float dpix = 300;
-                float dpiy = 300;
+                float dpix = dpi;
+                float dpiy = dpi;
                 bm.SetResolution(dpix, dpiy);
                 returnBmp = bm;
+                if(File.Exists(savingPathWithExtension))
+                {
+                    original.Dispose();
+                    File.Delete(savingPathWithExtension);
+                }
                 bm.Save(savingPathWithExtension);
                 bm.Dispose();
             }

@@ -193,6 +193,12 @@
     <Compile Include="ezSlideAnimations.cs" />
     <Compile Include="ezText.cs" />
     <Compile Include="ezTextStyle.cs" />
+    <Compile Include="FrmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSettings.Designer.cs">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Group.cs" />
     <Compile Include="HtmlGenerator.cs" />
     <Compile Include="PowerPointStudioRibbon.cs">
@@ -204,8 +210,13 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="ShapeExportOptions.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="WedgeEllipseCallout.cs" />
+    <EmbeddedResource Include="FrmSettings.resx">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PowerPointStudioRibbon.resx">
       <DependentUpon>PowerPointStudioRibbon.cs</DependentUpon>
     </EmbeddedResource>
@@ -251,6 +262,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\All2MP3forWindows_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\settings-icon-29.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

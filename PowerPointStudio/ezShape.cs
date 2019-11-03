@@ -40,7 +40,7 @@ namespace PowerPointStudio
 
         public ezShape(Shape shape)
         {
-            //Qulify shape Name
+                        
             string qulifiedShapeName = Utility.qulifiedNameGenerator(shape.Name);
             id = "sh" + qulifiedShapeName;
             @class = "temp"; //need to get it from alt text. if not found default is 'temp'
@@ -62,99 +62,14 @@ namespace PowerPointStudio
             }
 
             image = new ezImage(shape);
-            
-            //Handle placement
-            if(shape.AlternativeText.Contains("$Placement$"))
-            {
-                handlePlacement(shape);
-            }
-
+           
             actions = new ezAction(shape);
-
+            
             shapeCount++;
         }
 
-        private void handlePlacement(Shape shape)
-        {
-            //find placement text
-            string placementText = shape.AlternativeText;
-            placementText = "{"+placementText.Substring(placementText.IndexOf("$Placement$") + 11, (placementText.IndexOf("$$Placement$$")- (placementText.IndexOf("$Placement$") + 11)))+"}";
-            ezPlacement placement = Newtonsoft.Json.JsonConvert.DeserializeObject<ezPlacement>(placementText);
-
-            Presentation presentation = shape.Parent.Parent; //Getting the presentation object
-            shape.AlternativeText = (Regex.Replace(shape.AlternativeText, @"\t|\n|\r", "")).Trim();
-            string placeText = shape.AlternativeText;
-            placeText = placeText.Substring(placeText.IndexOf("$Placement$") + 11, (placeText.IndexOf("$$Placement$$") - (placeText.IndexOf("$Placement$") + 11)));
-
-            string toReplace = ("$Placement$" + placeText + "$$Placement$$").Trim();
-
-            shape.AlternativeText = shape.AlternativeText.Replace(toReplace, "");
-            shape.Copy();
-            int slideIndex = shape.Parent.SlideIndex;
-
-            switch (placement.onSlide)
-            {
-                case ezOnSlide.every:
-                    //Copy this shape to every other shape to the same location except the placement string on alt text
-                   
-                    foreach (Slide sld in presentation.Slides)
-                    {
-                        if(sld.SlideIndex!=slideIndex)
-                        {
-                            sld.Shapes.Paste();
-                        }
-                        
-                    }
-
-                    break;
-                case ezOnSlide.exceptFirst:
-                    foreach (Slide sld in presentation.Slides)
-                    {
-                        if (sld.SlideIndex != slideIndex && sld.SlideIndex != 1)
-                        {
-                            sld.Shapes.Paste();
-                        }
-
-                    }
-
-                    break;
-                case ezOnSlide.exceptLast:
-                    foreach (Slide sld in presentation.Slides)
-                    {
-                        if (sld.SlideIndex != slideIndex && sld.SlideIndex != presentation.Slides.Count)
-                        {
-                            sld.Shapes.Paste();
-                        }
-
-                    }
-                    break;
-                case ezOnSlide.evenPages:
-                    foreach (Slide sld in presentation.Slides)
-                    {
-                        if (sld.SlideIndex != slideIndex && (sld.SlideIndex/2.0)==0)
-                        {
-                            sld.Shapes.Paste();
-                        }
-
-                    }
-                    break;
-                case ezOnSlide.oddPages:
-                    foreach (Slide sld in presentation.Slides)
-                    {
-                        if (sld.SlideIndex != slideIndex && (sld.SlideIndex / 2.0) != 0)
-                        {
-                            sld.Shapes.Paste();
-                        }
-
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-        }
-
        
+
         private string classFinder(string altText)
         {
             string classContain = null;

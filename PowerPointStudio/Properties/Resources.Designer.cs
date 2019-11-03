@@ -83,6 +83,16 @@ namespace PowerPointStudio.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap settings_icon_29 {
+            get {
+                object obj = ResourceManager.GetObject("settings-icon-29", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap x_17_512 {
             get {
                 object obj = ResourceManager.GetObject("x-17-512", resourceCulture);
