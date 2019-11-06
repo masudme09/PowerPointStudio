@@ -56,11 +56,17 @@ namespace PowerPointStudio
         internal static bool ReadAndUpdateFromXML()
         {
             string xmlPath = @"C:\Users\Public\Documents\EzilmStudioSettings" + @"\settings.xml";
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.Load(xmlPath);
-            exportImageDpi = Convert.ToInt32(xmlDocument.GetElementsByTagName("exportDpi")[0].InnerText);
-            shapeExportOptions=(ShapeExportOptions) Enum.Parse(typeof(ShapeExportOptions), xmlDocument.GetElementsByTagName("shapeExportOptions")[0].InnerText, true);
-
+            if (File.Exists(xmlPath))
+            {                
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.Load(xmlPath);
+                exportImageDpi = Convert.ToInt32(xmlDocument.GetElementsByTagName("exportDpi")[0].InnerText);
+                shapeExportOptions = (ShapeExportOptions)Enum.Parse(typeof(ShapeExportOptions), xmlDocument.GetElementsByTagName("shapeExportOptions")[0].InnerText, true);
+            }
+            else
+            {
+                SaveSettings(72, ShapeExportOptions.OneShapeExportOnce);
+            }
             return true;
 
         }
