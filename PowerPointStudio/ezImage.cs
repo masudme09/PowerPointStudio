@@ -56,15 +56,23 @@ namespace PowerPointStudio
 
             //Need to set rotation property 0 before export then set back to original
             float originalRotation = shape.Rotation;
-            shape.Rotation = 0;
+            try
+            {
+                shape.Rotation = 0;
+            }catch
+            {
+
+            }
+            
             string exportedUrl="";
             //shape name may contain character that are not qualify as file name so need to remove those
             //Qulify shape Name
             string qulifiedShapeName = Utility.qulifiedNameGenerator(shape.Name);
             
             if(exportOptions==ShapeExportOptions.OneShapeExportOnce)
-            {
+            {                              
                 exportedUrl = shapeExportDirectory + "\\" + qulifiedShapeName + ".png";
+                             
             }
             else 
             {
@@ -73,8 +81,9 @@ namespace PowerPointStudio
             
 
             if (!File.Exists(exportedUrl))
-            {
+            {                
                 shape.Export(exportedUrl, PpShapeFormat.ppShapeFormatPNG, slideWidth * 4, slideHeight * 4, PpExportMode.ppClipRelativeToSlide);
+                                
             }
 
             //Back rotation to original
@@ -95,6 +104,39 @@ namespace PowerPointStudio
             Utility.CustomDpi(shapeBitmap, shapeBitmap.Width, shapeBitmap.Height, dpiRequired, exportedUrl);
         }
 
+        /// <summary>
+        /// This method will create image from text contain
+        /// </summary>
+        /// <param name="textShape"></param>
+        private Bitmap textExport(Shape textShape)
+        {
+            if(textShape.Type==Microsoft.Office.Core.MsoShapeType.msoTextBox)
+            {
+                string fontName = textShape.TextFrame.TextRange.Font.NameComplexScript;
+                float fontSize = textShape.TextFrame.TextRange.Font.Size;
+                string txt = textShape.TextFrame.TextRange.Text;
+                //creating bitmap image
+                Bitmap bmp = new Bitmap(1, 1);
+
+                //FromImage method creates a new Graphics from the specified Image.
+                Graphics graphics = Graphics.FromImage(bmp);
+                // Create the Font object for the image text drawing.
+                System.Drawing.Font font = new System.Drawing.Font(fontName, fontSize);
+                SizeF stringSize = graphics.MeasureString(txt, font);
+                bmp = new Bitmap(bmp, (int)stringSize.Width, (int)stringSize.Height);
+                graphics = Graphics.FromImage(bmp);
+
+                //Draw Specified text with specified format 
+                string fontColor = textShape.TextFrame.TextRange.Font.Color.ToString();
+                //Brushes brush = new Brushes();
+                graphics.DrawString(txt, font, Brushes.Black, 0, 0);
+                font.Dispose();
+                graphics.Flush();
+                graphics.Dispose();
+                return bmp;     //return Bitmap Image 
+            }
+            return null;
+        }
 
 
         /// <summary>

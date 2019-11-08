@@ -46,6 +46,11 @@ namespace PowerPointStudio
                 return ezShapeType.EllipseCallout;
             }
 
+            if(shape.Type==Microsoft.Office.Core.MsoShapeType.msoTextBox || (shape.Type==Microsoft.Office.Core.MsoShapeType.msoPlaceholder && shape.TextFrame.TextRange.Text!=""))
+            {
+                return ezShapeType.TextBox;
+            }
+
             //For others. Later we will go one by one. Now keep those in a common name 'other'
             return ezShapeType.Other;
         }
@@ -313,7 +318,7 @@ namespace PowerPointStudio
 
         public static string qulifiedNameGenerator(string unqualifiedName)
         {
-            string qualifiedName = (Regex.Replace(unqualifiedName, @"\t|\n|\r|-|/|\\|:|", ""));
+            string qualifiedName = Regex.Replace(unqualifiedName, @"\t|\n|\r|-|/|\\|:|\?|\*|<|>|""|", "");
             qualifiedName = qualifiedName.Replace(" ", "");
             return qualifiedName;
         }

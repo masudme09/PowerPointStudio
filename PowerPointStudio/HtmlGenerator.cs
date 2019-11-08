@@ -80,10 +80,17 @@ namespace PowerPointStudio
                 //Adding navigation button
                 string navigation = "";
 
-                if (htmlCount == 0)
+                if (htmlCount == 0 && presentation.ezSlides.Count>1)
                 {
                     navigation = "<div style=\"margin: 0px; position: absolute; top: 720px; left: 400px;\">" +
                 "            <a href=\"html0.html\" class=\"previous\">&laquo; Previous</a><a href=\"html" + (htmlCount + 1) + ".html\" class=\"next\">Next &raquo;</a>" +
+                "        </div>";
+                    headHtml = headHtml + navigation;
+                }
+                else if(htmlCount == 0 && presentation.ezSlides.Count == 1)
+                {
+                    navigation = "<div style=\"margin: 0px; position: absolute; top: 720px; left: 400px;\">" +
+                "            <a href=\"html0.html\" class=\"previous\">&laquo; Previous</a><a href=\"html" + (htmlCount) + ".html\" class=\"next\">Next &raquo;</a>" +
                 "        </div>";
                     headHtml = headHtml + navigation;
                 }

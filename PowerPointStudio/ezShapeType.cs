@@ -10,6 +10,7 @@ namespace PowerPointStudio
     {
         Group=1,
         EllipseCallout=2,
-        Other=3
+        TextBox=3,
+        Other=4
     }
 }

@@ -51,6 +51,11 @@ namespace PowerPointStudio
                     EzCssForWeb(ellipseCallout.calculatedWidth, ellipseCallout.calculatedHeight, ellipseCallout.calculatedLeft, 
                         ellipseCallout.calculatedTop, ellipseCallout.Zindex, ellipseCallout.Rotation);
                     break;
+                case ezShapeType.TextBox:
+                    TexBox textox = new TexBox(shape);
+                    EzCssForWeb(textox.width, textox.height, textox.left,
+                        textox.top, textox.Zindex, textox.Rotation);
+                    break;
                 default:
                     float thickness = shape.Line.Weight;
                     //Thickness may come incorrect if there is no thickness
